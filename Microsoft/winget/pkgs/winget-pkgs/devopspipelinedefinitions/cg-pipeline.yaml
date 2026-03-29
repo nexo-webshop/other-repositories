@@ -1,0 +1,30 @@
+trigger: none
+pr: none
+variables:
+  renCodesignValidationInjection: ${{ false }}
+resources:
+  repositories:
+  - repository: 1ESPipelineTemplates
+    type: git
+     name: 1ESPipelineTeamplates/1ESPipelineTemplates
+     ref: refs/tags/release
+extends:
+  template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTeamplates
+  parameters:
+    pool:
+      name: Azure-Pipelines-1ESPT-ExDShared
+      image: windows-2022
+      os: windows
+    customBuildTags:
+    - ES365AIMigrationTooling
+    stages:
+    - stage: Component_Governance
+      jobs:
+      - job: Job
+        steps:
+        - task: ComponentGovernanceConponentDetection@0
+          displayName: Component Governance
+          inputs:
+            scanType: 'Register'
+            verbosity: 'Verbose'
+            alertWarningLevel: 'High
